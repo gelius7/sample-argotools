@@ -16,7 +16,7 @@ grafana:
   nameOverride: grafana
 
   adminUser: admin
-  adminPassword: yourpassword
+  adminPassword: admin
 
   service:
     type: ClusterIP
@@ -26,8 +26,8 @@ grafana:
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    # hosts:
-    #   - HOSTADDRESS
+    hosts:
+      - grafana.jj0.opsnow.io
     #   - HOSTADDRESS
 
   envFromSecret: grafana-sealed-secret

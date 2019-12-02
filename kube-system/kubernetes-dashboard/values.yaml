@@ -23,6 +23,6 @@ kubernetes-dashboard:
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-#    hosts: 
-#      - HOSTADDRESS
+   hosts: 
+     - kube-dash.jj0.opsnow.io
 #      - HOSTADDRESS

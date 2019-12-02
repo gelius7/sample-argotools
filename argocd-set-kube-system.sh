@@ -7,9 +7,16 @@ CUR_NAME=${0##*/}
 SHELL_DIR=$(dirname $0)
 . ${SHELL_DIR}/common.sh
 
+LIST=${CUR_DIR}/.${CUR_NAME}-list
 
-readonly SHORT_OPT="hn:p:"
-readonly LONG_OPT="help,name:,path:"
+NAME=""
+APP_PATH=""
+REPO="https://github.com/gelius7/sample-argotools.git"
+DEST_SERVER="https://kubernetes.default.svc"
+DEST_NAMESPACE="kube-system"
+
+readonly SHORT_OPT="hn:p:s:"
+readonly LONG_OPT="help,name:,path:,space:"
 
 _help() {
     cat <<EOF
@@ -21,6 +28,9 @@ Params:
 
     -n, --name                  argocd 로 설치할 application name
     -p, --path                  argocd 로 설치할 application path
+
+    -s, --space                 argocd 로 설치할 application namespace
+                                namespace (directory) 안에 있는 모든 application 들을 설치합니다.
 
 ================================================================================
 
@@ -43,11 +53,15 @@ _run() {
         case "$1" in
             -n|--name)
                 shift
-                PARAM_NAME=${1}
+                NAME=${1}
                 ;;
             -p|--path)
                 shift
-                PARAM_PATH=${1}
+                APP_PATH=${1}
+                ;;
+            -s|--space)
+                shift
+                NAMESPACE_PATH=${1}
                 ;;
             -h|--help)
                 _help
@@ -66,19 +80,96 @@ _run() {
 
 }
 
-_main() {
+__check_argo_repo() {
+  IS_EXIST=$(argocd repo list | grep ${REPO} | wc -l)
+  if [[ $IS_EXIST -ne 1 ]]; then
+    _command "Add Repository ${REPO}"
+    argocd repo add ${REPO}
+    argocd proj create ${DEST_NAMESPACE} --src ${REPO} --dest https://kubernetes.default.svc,${DEST_NAMESPACE}
+    argocd proj allow-cluster-resource ${DEST_NAMESPACE} "*" "*"
 
-  if [ -z ${PARAM_NAME} ]; then
+    argocd proj list
+  fi
+}
+
+__check_argo_proj() {
+  IS_EXIST=$(argocd proj list | grep ${DEST_NAMESPACE} | wc -l)
+
+  if [[ $IS_EXIST -ne 1 ]]; then
+    _command "Create argocd project ${DEST_NAMESPACE}"
+    argocd proj create ${DEST_NAMESPACE} --src ${REPO} --dest https://kubernetes.default.svc,${DEST_NAMESPACE}
+    argocd proj allow-cluster-resource ${DEST_NAMESPACE} "*" "*"
+
+    argocd proj list
+  fi
+}
+
+__partial_app() {
+  if [ -z ${NAME} ]; then
     _error "Need to Application name"
   fi
 
-  if [ -z ${PARAM_PATH} ]; then 
-    _error "Need to Application path in Git repo"
+  if [ -z ${REPO} ]; then 
+    _error "Need to Git repo"
   fi
 
-  _command "argocd repo add ${PARAM_REPO} --username ${PARAM_USER} --password {PASSWORD}"
-  argocd repo add ${PARAM_REPO} --username ${PARAM_USER} --password ${PARAM_PW}
-  argocd repo list
+  if [ -z ${APP_PATH} ]; then 
+    _error "Need to APP_PATH"
+  fi
+
+  if [ -z ${DEST_SERVER} ]; then 
+    _error "Need to DEST_SERVER"
+  fi
+
+  if [ -z ${DEST_NAMESPACE} ]; then 
+    _error "Need to DEST_NAMESPACE"
+  fi
+
+  __check_argo_repo
+  __check_argo_proj
+
+  _command "$ argocd app create ${NAME} \
+  --repo ${REPO} \
+  --path ${APP_PATH} \
+  --dest-server ${DEST_SERVER} \
+  --dest-namespace ${DEST_NAMESPACE}\
+  --project ${DEST_NAMESPACE} \
+  --upsert"
+
+  argocd app create ${NAME} \
+      --repo ${REPO} \
+      --path ${APP_PATH} \
+      --dest-server ${DEST_SERVER} \
+      --dest-namespace ${DEST_NAMESPACE} \
+      --project ${DEST_NAMESPACE} \
+      --upsert
+}
+
+__directory_app() {
+
+  # list apps
+  _command ""
+  ls -l ${NAMESPACE_PATH} | grep "^d" | awk '{print $9}' > ${LIST}
+
+  while IFS='' read -r line || [[ -n "$line" ]]; do
+    NAME=${line}
+    APP_PATH=${NAMESPACE_PATH}/${NAME}
+    DEST_NAMESPACE=${NAMESPACE_PATH}
+    __partial_app
+  done < "${LIST}"
+
+}
+
+_main() {
+
+
+
+  if [ -z ${NAMESPACE_PATH} ]; then
+    __partial_app
+  else
+    __directory_app
+    
+  fi
 
 }
 

@@ -10,4 +10,4 @@ k8s-spot-termination-handler:
 
     # slackUrl: SLACKURL
 
-    # clusterName: CLUSTER_NAME
+    clusterName: seoul-sre-jj0-eks
