@@ -30,7 +30,6 @@ grafana:
       - grafana.jj0.opsnow.io
     #   - HOSTADDRESS
 
-  envFromSecret: grafana-sealed-secret
   # env:
     # GF_SERVER_ROOT_URL: HOSTADDRESS
     # GF_AUTH_GOOGLE_ENABLED: true
