@@ -1,0 +1,12 @@
+# chart-repo: stable/newrelic-infrastructure
+# chart-version: 0.9.0
+
+# Need to replace
+# CLUSTER_NAME ex. seoul-my-eks
+# LICENSE_KEY ex. 11111111xxxxxxxxxxxxxxxxxxxxxx
+
+nameOverride: newrelic-infrastructure
+
+# cluster: CLUSTER_NAME
+
+# licenseKey: LICENSE_KEY

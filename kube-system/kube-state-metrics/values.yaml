@@ -1,0 +1,5 @@
+# chart-repo: stable/kube-state-metrics
+# chart-version: 0.16.0
+
+kube-state-metrics:
+  nameOverride: kube-state-metrics

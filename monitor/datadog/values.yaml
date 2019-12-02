@@ -1,0 +1,22 @@
+# chart-repo: stable/datadog
+# chart-version: 1.26.0
+
+# Need to replace
+# CLUSTER_NAME ex. seoul-my-eks
+
+datadog:
+  nameOverride: datadog
+
+  datadog:
+    # clusterName: CLUSTER_NAME
+    apiKey: API_KEY
+    appKey: APP_KEY
+
+  # clusterAgent:
+  #   enabled: true
+  #   token: ""
+  #   metricsProvider:
+  #     enabled: true
+
+  kubeStateMetrics:
+    enabled: KUBE_STATE_METRICS

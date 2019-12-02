@@ -1,0 +1,13 @@
+# chart-repo: stable/k8s-spot-termination-handler
+# chart-version: 1.1.0
+
+# Need to replace
+# SLACKURL ex. https://hooks.slack.com/services/TXXXXXXX1/B9XXXXXXXX9M/0csxxxxxxxxxxxx5hKVBVFttG
+# CLUSTER_NAME ex. seoul-my-eks
+
+k8s-spot-termination-handler:
+    nameOverride: k8s-spot-termination-handler
+
+    # slackUrl: SLACKURL
+
+    # clusterName: CLUSTER_NAME

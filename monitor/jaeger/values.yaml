@@ -1,0 +1,40 @@
+# chart-repo: incubator/jaeger
+# chart-version: 0.9.0
+# chart-ingress: true
+
+# Need to replace
+# ES_HOST ex. search-seoul-xxxxx-elasticsearch-xxxxxxxxxxxxxxxx.ap-northeast-2.es.amazonaws.com
+# HOSTADDRESS ex. kubernetes-dashboard.mysite.com
+
+jaeger:
+  nameOverride: jaeger
+
+  provisionDataStore:
+    cassandra: false
+    elasticsearch: false
+
+  storage:
+    # allowed values (cassandra, elasticsearch)
+    type: elasticsearch
+    elasticsearch:
+      # host: ES_HOST
+      port: 80
+      user:
+      password:
+
+  #elasticsearch:
+  #  image:
+  #    tag: "6.6.2"
+
+  query:
+    enabled: true
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      # hosts:
+      #   - HOSTADDRESS
+      #   - HOSTADDRESS
