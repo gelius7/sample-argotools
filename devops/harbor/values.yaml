@@ -6,12 +6,12 @@ harbor:
   expose:
     ingress:
       hosts:
-        core: INGRESS_DOMAIN
+        core: harbor.jj0.opsnow.io
         notary: notary.jj0.opsnow.io
     tls:
       secretName: cert-stage-wildcard
 
-  externalURL: https://INGRESS_DOMAIN
+  externalURL: https://harbor.jj0.opsnow.io
 
   harborAdminPassword: admin
 
