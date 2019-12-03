@@ -1,0 +1,4 @@
+dependencies:
+- name: kubed
+  version: latest
+  repository: https://charts.appscode.com/stable

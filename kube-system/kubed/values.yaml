@@ -1,0 +1,9 @@
+# chart-repo: appscode/kubed
+# chart-version: 0.10.0
+
+kubed:
+  config:
+    clusterName: "seoul-sre-jj0-eks"
+
+  apiserver:
+    enabled: false

@@ -1,0 +1,4 @@
+dependencies:
+- name: cert-manager
+  version: latest
+  repository: https://kubernetes-charts.storage.googleapis.com
