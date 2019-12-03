@@ -4,3 +4,4 @@
 
 cert-manager:
   nameOverride: cert-manager
+  clusterResourceNamespace: kube-ingress
