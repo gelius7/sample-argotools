@@ -1,0 +1,19 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: wildcard-stage
+  namespace: kube-ingress
+spec:
+  secretName: cert-stage-wildcard
+  issuerRef:
+    name: le-wildcard-issuer
+    kind: ClusterIssuer
+  commonName: "*.jj0.opsnow.io"
+  dnsNames:
+  - "*.jj0.opsnow.io"
+  acme:
+    config:
+    - dns01:
+        provider: aws-dns
+      domains:
+      - "*.jj0.opsnow.io"
