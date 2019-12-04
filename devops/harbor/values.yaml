@@ -96,36 +96,36 @@ harbor:
     resourcePolicy: "delete"
     persistentVolumeClaim:
       registry:
-        existingClaim: ""
-        # existingClaim: "harbor-harbor-registry"
+        # existingClaim: ""
+        existingClaim: "harbor-harbor-registry"
         storageClass: "efs"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 5Gi
       chartmuseum:
-        existingClaim: ""
-        # existingClaim: "harbor-harbor-chartmuseum"
+        # existingClaim: ""
+        existingClaim: "harbor-harbor-chartmuseum"
         storageClass: "efs"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 5Gi
       jobservice:
-        existingClaim: ""
-        # existingClaim: "harbor-harbor-jobservice"
+        # existingClaim: ""
+        existingClaim: "harbor-harbor-jobservice"
         storageClass: "efs"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 1Gi
       database:
-        existingClaim: ""
-        # existingClaim: "database-data-harbor-harbor-database-0"
+        # existingClaim: ""
+        existingClaim: "database-data-harbor-harbor-database-0"
         storageClass: "efs"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 1Gi
       redis:
-        existingClaim: ""
-        # existingClaim: "data-harbor-harbor-redis-0"
+        # existingClaim: ""
+        existingClaim: "data-harbor-harbor-redis-0"
         storageClass: "efs"
         subPath: ""
         accessMode: ReadWriteOnce
